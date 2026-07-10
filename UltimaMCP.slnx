@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="UltimaAPI.Tests/UltimaAPI.Tests.csproj" />
+  <Project Path="UltimaAPI/UltimaAPI.csproj" />
+</Solution>
