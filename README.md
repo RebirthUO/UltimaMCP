@@ -1,14 +1,13 @@
 # UltimaMCP
 
-UltimaMCP is a localhost-only .NET 10 bridge over the ServUO Ultima SDK. It exposes classic Ultima Online client data as semantic JSON through REST/OpenAPI and as model-oriented tools through MCP Streamable HTTP.
+UltimaMCP is a localhost-only .NET 10 bridge over the Ultima SDK. It exposes classic Ultima Online client data as semantic JSON through REST/OpenAPI and as model-oriented tools through MCP Streamable HTTP.
 
-The referenced `ServUO/Ultima` project remains unchanged. UltimaMCP validates inputs and serializes access around the SDK because the legacy SDK uses mutable static caches and shared read buffers.
+The required `Ultima.dll` is included at the repository root and copied to the application output during builds. UltimaMCP validates inputs and serializes access around the SDK because it uses mutable static caches and shared read buffers.
 
 ## Requirements
 
 - Windows and .NET 10 SDK
 - A legal local Ultima Online Classic installation
-- The referenced `../ServUO/Ultima/Ultima.csproj`
 
 Image rendering uses `System.Drawing` and is Windows-only. The server binds to `127.0.0.1:5027` by default and has no authentication; do not expose it on an external interface without adding authentication and transport security.
 

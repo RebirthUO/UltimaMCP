@@ -16,7 +16,8 @@
 
   <ItemGroup>
     <Reference Include="Ultima">
-      <HintPath>..\..\ServUO\Ultima.dll</HintPath>
+      <HintPath>..\Ultima.dll</HintPath>
+      <Private>true</Private>
     </Reference>
   </ItemGroup>
 
