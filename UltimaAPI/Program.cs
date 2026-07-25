@@ -47,4 +47,4 @@ app.MapMcp("/mcp");
 
 app.Run();
 
-partial class Program;
+public partial class Program;
