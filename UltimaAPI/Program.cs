@@ -1,6 +1,5 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
-using ModelContextProtocol.Server;
 using Scalar.AspNetCore;
 using UltimaAPI.Configuration;
 using UltimaAPI.Endpoints;
@@ -48,4 +47,4 @@ app.MapMcp("/mcp");
 
 app.Run();
 
-public partial class Program;
+partial class Program;
