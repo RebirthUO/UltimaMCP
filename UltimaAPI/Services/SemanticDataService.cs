@@ -1,6 +1,7 @@
 using System.Drawing;
 using Microsoft.Extensions.Options;
 using Ultima;
+using UltimaAPI.Cliloc;
 using UltimaAPI.Configuration;
 using UltimaAPI.Models;
 
@@ -33,7 +34,7 @@ internal sealed class SemanticDataService
 
     private readonly UltimaSdkGateway _sdk;
     private readonly int _maxSearchResults;
-    private readonly Dictionary<string, StringList> _stringLists = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, ClilocFile> _clilocFiles = new(StringComparer.OrdinalIgnoreCase);
 
     public SemanticDataService(UltimaSdkGateway sdk, IOptions<UltimaOptions> options)
     {
@@ -158,8 +159,8 @@ internal sealed class SemanticDataService
 
         return _sdk.Read(() =>
         {
-            StringList list = GetStringList(normalizedLanguage);
-            StringEntry? entry = list.GetEntry(number);
+            ClilocFile cliloc = GetClilocFile(normalizedLanguage);
+            ClilocEntry? entry = cliloc.TryGetEntry(number);
             if (entry is null)
             {
                 throw new KeyNotFoundException($"Localized string {number} was not found in {normalizedLanguage}.");
@@ -178,7 +179,7 @@ internal sealed class SemanticDataService
 
         return _sdk.Read(() =>
         {
-            StringEntry[] matches = GetStringList(normalizedLanguage).Entries
+            ClilocEntry[] matches = GetClilocFile(normalizedLanguage).Entries
                 .Where(entry => entry.Text.Contains(term, StringComparison.OrdinalIgnoreCase))
                 .ToArray();
             LocalizedStringData[] items = matches.Skip(offset).Take(take)
@@ -285,9 +286,9 @@ internal sealed class SemanticDataService
         });
     }
 
-    private StringList GetStringList(string language)
+    private ClilocFile GetClilocFile(string language)
     {
-        if (_stringLists.TryGetValue(language, out StringList? existing))
+        if (_clilocFiles.TryGetValue(language, out ClilocFile? existing))
         {
             return existing;
         }
@@ -304,9 +305,9 @@ internal sealed class SemanticDataService
             throw new UltimaSdkUnavailableException($"Localized string file 'cliloc.{language}' is unavailable.");
         }
 
-        StringList list = new(language, path);
-        _stringLists.Add(language, list);
-        return list;
+        ClilocFile cliloc = ClilocFile.Load(language, path);
+        _clilocFiles.Add(language, cliloc);
+        return cliloc;
     }
 
     private static string NormalizeLanguage(string? language)
@@ -320,6 +321,6 @@ internal sealed class SemanticDataService
         return value;
     }
 
-    private static LocalizedStringData ToLocalizedString(string language, StringEntry entry)
+    private static LocalizedStringData ToLocalizedString(string language, ClilocEntry entry)
         => new(language, entry.Number, entry.Text, entry.Flag.ToString());
 }
