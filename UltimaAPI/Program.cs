@@ -13,7 +13,10 @@ builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<ApiExceptionHandler>();
 builder.Services.AddMcpServer()
-    .WithHttpTransport()
+    .WithHttpTransport(options =>
+    {
+        options.IdleTimeout = TimeSpan.FromHours(24);
+    })
     .WithToolsFromAssembly();
 
 // Configure the JSON serializer to output readable formatted JSON for your AI
