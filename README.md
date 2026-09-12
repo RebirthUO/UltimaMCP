@@ -99,7 +99,7 @@ SDK methods that mutate, import, replace, remove, save, or attach to a live clie
 
 ## Build and test
 
-UltimaAPI only: `.\build.ps1` (optional `-Configuration Release`).
+UltimaAPI only: `.\build.ps1` or `.\build.bat` (optional `-Configuration Release` or `-c Release`).
 
 ```powershell
 dotnet build .\UltimaMCP.slnx
